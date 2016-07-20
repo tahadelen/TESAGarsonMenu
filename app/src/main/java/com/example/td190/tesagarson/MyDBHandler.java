@@ -10,6 +10,11 @@ import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
 
+import com.example.td190.tesagarson.Model.Tables;
+import com.example.td190.tesagarson.Model.Users;
+import com.example.td190.tesagarson.Model.Products;
+import com.example.td190.tesagarson.Model.Category;
+
 public class MyDBHandler extends SQLiteOpenHelper{
 
     //Version of the database
@@ -17,11 +22,25 @@ public class MyDBHandler extends SQLiteOpenHelper{
     //Name of my database file
     private static final String DATABASE_NAME = "restaurantRecords";
 
-    //table for tables
-    public static final String TABLE_TABLES = "tables";
+    //Table for products
+    public static final String TABLE_PRODUCTS = "products";
+    //Columns for products
+    public static final String COLUMN_PRODUCT_ID = "_productId";
+    public static final String COLUMN_PRODUCTNAME = "_productName";
+    public static final String COLUMN_PRODUCTCAT = "_productCat";
+    public static final String COLUMN_PRODUCTIMG = "_img";
+    public static final String COLUMN_PRODUCTPRICE = "_price";
 
+    //Table for categories
+    public static final String TABLE_CATEGORY = "category";
+    //Columns for categories
+    public static final String COLUMN_CATID = "_catId";
+    public static final String COLUMN_CATNAME = "_catName";
+
+    //Table for tables
+    public static final String TABLE_TABLES = "tables";
     //Columns for table tables
-    public static final String COLUMN_TABLE_ID = "_id";
+    public static final String COLUMN_TABLE_ID = "_tableId";
     public static final String COLUMN_TABLENAME = "_tableName";
     public static final String COLUMN_FLOOR = "_floor";
     public static final String COLUMN_TABLECUSTNUM = "_tableCustNum";
@@ -29,11 +48,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     //table for users
     public static final String TABLE_USERS = "users";
-
     //Columns for table users
-    public static final String COLUMN_USER_ID = "_id";
-    public static final String COLUMN_USERNAME = "_name";
-    public static final String COLUMN_USERPASSWORD = "_password";
+    public static final String COLUMN_USER_ID = "_userId";
+    public static final String COLUMN_USERNAME = "_userName";
+    public static final String COLUMN_USERPASSWORD = "_userPassword";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -54,14 +72,32 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_USERNAME + " TEXT, " +
                 COLUMN_USERPASSWORD + " TEXT " +
                 ");";
+
+        String query_cat = "CREATE TABLE " + TABLE_CATEGORY + "(" +
+                COLUMN_CATID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CATNAME + " TEXT " +
+                ");";
+
+        String query_product = "CREATE TABLE " + TABLE_PRODUCTS + "(" +
+                COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_PRODUCTNAME + " TEXT, " +
+                COLUMN_PRODUCTCAT + " TEXT, " +
+                COLUMN_PRODUCTIMG + " BLOB, " +
+                COLUMN_PRODUCTPRICE + " INTEGER " +
+                ");";
+
         sqLiteDatabase.execSQL(query_user);
         sqLiteDatabase.execSQL(query_table);
+        sqLiteDatabase.execSQL(query_cat);
+        sqLiteDatabase.execSQL(query_product);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TABLES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         onCreate(sqLiteDatabase);
     }
 
@@ -115,12 +151,20 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TABLES + ";" );
         db.execSQL("DELETE FROM " + TABLE_USERS + ";");
+        db.execSQL("DELETE FROM " + TABLE_CATEGORY + ";");
+        db.execSQL("DELETE FROM " + TABLE_PRODUCTS + ";");
         db.close();
     }
 
-    public void deleteTable(String tableName){
+    public void deleteTable(){
+        //String tableName
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_TABLES + " WHERE " + COLUMN_TABLENAME + "=\"" + tableName + "\";");
+        //db.execSQL("DELETE FROM " + TABLE_TABLES + " WHERE " + COLUMN_TABLENAME + "=\"" + tableName + "\";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TABLES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+        db.close();
     }
 
     public Cursor selectAll(){

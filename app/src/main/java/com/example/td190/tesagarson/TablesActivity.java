@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.example.td190.tesagarson.Model.Tables;
+
 import java.util.ArrayList;
 
 public class TablesActivity extends Activity{
@@ -91,7 +93,7 @@ public class TablesActivity extends Activity{
             if(c.getString(c.getColumnIndex("_tableName")) != null) {
                 Tables table = new Tables();
 
-                table.set_id(c.getInt(c.getColumnIndex("_id")));
+                table.set_id(c.getInt(c.getColumnIndex("_tableId")));
                 table.set_tableName(c.getString(c.getColumnIndex("_tableName")));
                 table.set_floor(c.getInt(c.getColumnIndex("_floor")));
                 table.set_tableStatus(c.getInt(c.getColumnIndex("_tableStatus")));

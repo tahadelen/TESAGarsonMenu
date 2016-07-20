@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.td190.tesagarson.Model.Tables;
+import com.example.td190.tesagarson.Model.Users;
+
 public class ActivityLogin extends Activity {
 
     private Button loginButton,cancelButton;
@@ -26,7 +29,7 @@ public class ActivityLogin extends Activity {
 
         addDataToDatabase(dbHandler);
 
-        Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
 
         loginButton=(Button)findViewById(R.id.loginButton);
         nameText=(EditText)findViewById(R.id.nameText);

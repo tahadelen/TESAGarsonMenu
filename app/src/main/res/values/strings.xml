@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tesa Garson Uygulamasi</string>
+    <string name="loginText">Giriş</string>
+    <string name="enterName">Kullanıcı Adı Giriniz</string>
+    <string name="enterPass">Şifre Giriniz</string>
+    <string name="attemptLeft">Kalan Deneme:</string>
+    <string name="loginButton">login</string>
+    <string name="cancelButton">Cancel</string>
+</resources>

@@ -44,6 +44,7 @@ public class RestaurantMenuActivity extends Activity {
 
     public void onItemClick(int mPosition)
     {
-        Toast.makeText(CustomListView, "clicked", Toast.LENGTH_LONG).show();
+        final Category tempValue = categories.get(mPosition);
+        Toast.makeText(CustomListView, "Kategori: " + tempValue.get_catName(), Toast.LENGTH_LONG).show();
     }
 }

@@ -11,7 +11,7 @@
     android:id="@+id/listview_menu_product">
 
     <ListView
-        android:layout_width="100dp"
+        android:layout_width="220dp"
         android:layout_height="350dp"
         android:layout_marginTop="30dp"
         android:id="@+id/listView_menu_cat"
@@ -20,7 +20,7 @@
         style="@style/listview_style"/>
 
     <ListView
-        android:layout_width="100dp"
+        android:layout_width="220dp"
         android:layout_height="350dp"
         android:layout_marginTop="30dp"
         android:id="@+id/listView_menu"
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="Kategoriler:"
         android:id="@+id/menu_cat_text"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/listView_menu_cat" />
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="İçerik:"
         android:id="@+id/menu_product_text"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/listView_menu" />

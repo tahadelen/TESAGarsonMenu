@@ -153,7 +153,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
 
     public ArrayList getProducts() {
-        Products product = new Products();
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE 1";
         Cursor c = db.rawQuery(query, null);
@@ -163,6 +162,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             return null;
         }else {
             do{
+                Products product = new Products();
                 product.set_id(c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID)));
                 product.set_productName(c.getString(c.getColumnIndex(COLUMN_PRODUCTNAME)));
                 product.set_productCat(c.getString(c.getColumnIndex(COLUMN_PRODUCTCAT)));
@@ -177,7 +177,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
 
     public ArrayList getCategories(){
-        Category category = new Category();
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_CATEGORY + " WHERE 1";
         Cursor c = db.rawQuery(query, null);
@@ -187,6 +186,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             return null;
         }else{
             do {
+                Category category = new Category();
                 category.set_id(c.getInt(c.getColumnIndex(COLUMN_CATID)));
                 category.set_catName(c.getString(c.getColumnIndex(COLUMN_CATNAME)));
                 category.set_catImg(c.getBlob(c.getColumnIndex(COLUMN_CATIMG)));

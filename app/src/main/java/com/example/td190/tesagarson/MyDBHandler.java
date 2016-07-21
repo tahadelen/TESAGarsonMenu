@@ -15,6 +15,8 @@ import com.example.td190.tesagarson.Model.Users;
 import com.example.td190.tesagarson.Model.Products;
 import com.example.td190.tesagarson.Model.Category;
 
+import java.util.ArrayList;
+
 public class MyDBHandler extends SQLiteOpenHelper{
 
     //Version of the database
@@ -53,6 +55,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_USER_ID = "_userId";
     public static final String COLUMN_USERNAME = "_userName";
     public static final String COLUMN_USERPASSWORD = "_userPassword";
+
+    private ArrayList<Products> productList = new ArrayList<>();
+    private ArrayList<Category> categoryList = new ArrayList<>();
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -147,6 +152,52 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public ArrayList getProducts() {
+        Products product = new Products();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE 1";
+        Cursor c = db.rawQuery(query, null);
+
+        if (!(c.moveToFirst()) || c.getCount() == 0) {
+            db.close();
+            return null;
+        }else {
+            do{
+                product.set_id(c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID)));
+                product.set_productName(c.getString(c.getColumnIndex(COLUMN_PRODUCTNAME)));
+                product.set_productCat(c.getString(c.getColumnIndex(COLUMN_PRODUCTCAT)));
+                product.set_img(c.getBlob(c.getColumnIndex(COLUMN_PRODUCTIMG)));
+                product.set_price(c.getInt(c.getColumnIndex(COLUMN_PRODUCTPRICE)));
+
+                productList.add(product);
+            }while (c.moveToNext());
+            db.close();
+            return productList;
+        }
+    }
+
+    public ArrayList getCategories(){
+        Category category = new Category();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CATEGORY + " WHERE 1";
+        Cursor c = db.rawQuery(query, null);
+
+        if(!(c.moveToFirst()) || c.getCount() == 0){
+            db.close();
+            return null;
+        }else{
+            do {
+                category.set_id(c.getInt(c.getColumnIndex(COLUMN_CATID)));
+                category.set_catName(c.getString(c.getColumnIndex(COLUMN_CATNAME)));
+                category.set_catImg(c.getBlob(c.getColumnIndex(COLUMN_CATIMG)));
+
+                categoryList.add(category);
+            }while(c.moveToNext());
+            db.close();
+            return categoryList;
+        }
+    }
+
     public Users getUser(String User_Name, String User_Password){
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
@@ -157,7 +208,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         //String query = "SELECT * FROM " + TABLE_USERS + " WHERE 1";
 
         Cursor c = db.rawQuery(query, null);
-
 
         if (!(c.moveToFirst()) || c.getCount() == 0)
             return null;

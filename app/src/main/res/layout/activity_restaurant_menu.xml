@@ -23,7 +23,7 @@
         android:layout_width="220dp"
         android:layout_height="350dp"
         android:layout_marginTop="30dp"
-        android:id="@+id/listView_menu"
+        android:id="@+id/listview_menu_pro"
         android:layout_alignParentTop="true"
         style="@style/listview_style"
         android:layout_toEndOf="@+id/listView_menu_cat" />
@@ -44,5 +44,5 @@
         android:text="İçerik:"
         android:id="@+id/menu_product_text"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/listView_menu" />
+        android:layout_alignStart="@+id/listview_menu_pro" />
 </RelativeLayout>

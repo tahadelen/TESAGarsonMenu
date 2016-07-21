@@ -14,8 +14,10 @@ import java.util.ArrayList;
 
 public class RestaurantMenuActivity extends Activity {
 
-    private ListView list;
-    private CategoryAdapter adapter;
+    private ListView list_cat;
+    private ListView list_pro;
+    private CategoryAdapter cat_adapter;
+    private ProductAdapter pro_adapter;
     private MyDBHandler db = new MyDBHandler(this, null, null, 1);
     public RestaurantMenuActivity CustomListView = null;
     public ArrayList<Products> products = new ArrayList<>();
@@ -31,20 +33,40 @@ public class RestaurantMenuActivity extends Activity {
         Toast.makeText(getApplicationContext(), "Table: " + table, Toast.LENGTH_SHORT).show();
 
         categories = db.getCategories();
-        products = db.getProducts();
 
         CustomListView = this;
 
         Resources res = getResources();
-        list = ( ListView )findViewById( R.id.listView_menu_cat );  // List defined in XML ( See Below )
+        list_cat = ( ListView )findViewById( R.id.listView_menu_cat );  // List defined in XML ( See Below )
 
-        adapter = new CategoryAdapter( CustomListView, categories, res );
-        list.setAdapter( adapter );
+        cat_adapter = new CategoryAdapter( CustomListView, categories, res );
+        list_cat.setAdapter( cat_adapter );
     }
 
     public void onItemClick(int mPosition)
     {
         final Category tempValue = categories.get(mPosition);
-        Toast.makeText(CustomListView, "Kategori: " + tempValue.get_catName(), Toast.LENGTH_LONG).show();
+        ArrayList<Products> filtred = new ArrayList<>();
+
+        products = db.getProducts();
+
+        CustomListView = this;
+        Resources res = getResources();
+        list_pro = (ListView)findViewById(R.id.listview_menu_pro);
+
+        filtred.clear();
+        for (int i=0; i<categories.size(); i++){
+            for(int j=0; j<products.size(); j++) {
+                if (products.get(j).get_productCat().equals(categories.get(i).get_catName())){
+                    filtred.add(products.get(j));
+                }
+            }
+        }
+
+        pro_adapter = new ProductAdapter(CustomListView, filtred, res);
+        list_pro.setAdapter(pro_adapter);
+
+        //Toast.makeText(CustomListView, "Kategori: " + tempValue.get_catName(), Toast.LENGTH_LONG).show();
     }
+
 }

@@ -15,23 +15,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.example.td190.tesagarson.Model.Category;
+import com.example.td190.tesagarson.Model.Products;
+
 import java.util.ArrayList;
 
-public class CategoryAdapter extends BaseAdapter implements OnClickListener {
+public class ProductAdapter extends BaseAdapter implements OnClickListener{
 
     private Activity activity;
-    private ArrayList categories;
+    private ArrayList products;
     private static LayoutInflater inflater=null;
-    private Category modelCategory = new Category();
-
+    private Products modelProduct = new Products();
     public Resources res;
 
-    public CategoryAdapter(Activity a, ArrayList d, Resources resLocal) {
+    public ProductAdapter(Activity a, ArrayList d, Resources resLocal) {
 
         /********** Take passed values **********/
         activity = a;
-        categories=d;
+        products=d;
         res = resLocal;
 
         /***********  Layout inflator to call external xml layout () ***********/
@@ -41,10 +43,10 @@ public class CategoryAdapter extends BaseAdapter implements OnClickListener {
 
     @Override
     public int getCount() {
-        if(categories.size() <= 0)
+        if(products.size() <= 0)
             return -1;
         else
-            return categories.size();
+            return products.size();
     }
 
     @Override
@@ -57,15 +59,11 @@ public class CategoryAdapter extends BaseAdapter implements OnClickListener {
         return i;
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
-
     public static class ViewHolder{
 
-        public TextView catName;
-        public ImageView catImage;
+        public TextView proName;
+        public TextView proPrice;
+        public ImageView proImage;
 
     }
 
@@ -77,34 +75,35 @@ public class CategoryAdapter extends BaseAdapter implements OnClickListener {
         if(convertView==null){
 
             /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.catitem, null);
+            vi = inflater.inflate(R.layout.proitem, null);
 
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.catName = (TextView) vi.findViewById(R.id.catName);
-            holder.catImage=(ImageView)vi.findViewById(R.id.catImage);
+            holder.proName = (TextView) vi.findViewById(R.id.proName);
+            holder.proPrice = (TextView) vi.findViewById(R.id.proPrice);
+            holder.proImage = (ImageView)vi.findViewById(R.id.proImage);
 
             vi.setTag( holder );
         }
         else
             holder=(ViewHolder)vi.getTag();
 
-        if(categories.size()<=0)
+        if(products.size()<=0)
         {
-            holder.catName.setText("No Data");
-
+            holder.proName.setText("No Data");
         }
         else
         {
             /***** Get each Model object from Arraylist ********/
-            modelCategory=null;
-            modelCategory = ( Category ) categories.get( position );
+            modelProduct = null;
+            modelProduct = ( Products ) products.get( position );
 
             /************  Set Model values in Holder elements ***********/
 
-            holder.catName.setText( modelCategory.get_catName() );
-            holder.catImage.setImageBitmap(BitmapFactory.decodeByteArray(modelCategory.get_catImg(), 0, modelCategory.get_catImg().length));
+            holder.proName.setText( modelProduct.get_productName() );
+            holder.proPrice.setText( Integer.toString(modelProduct.get_price()) );
+            holder.proImage.setImageBitmap(BitmapFactory.decodeByteArray(modelProduct.get_img(), 0, modelProduct.get_img().length));
 
             /******** Set Item Click Listner for LayoutInflater for each row *******/
 
@@ -130,4 +129,10 @@ public class CategoryAdapter extends BaseAdapter implements OnClickListener {
             sct.onItemClick(mPosition);
         }
     }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
 }

@@ -19,11 +19,12 @@ import java.util.ArrayList;
 
 public class TablesActivity extends Activity{
 
-    Spinner floorDropDown;
+    private Spinner floorDropDown;
     private static final String floors[] = {"0","1"};
-    ListView list;
-    CustomAdapter adapter;
+    private ListView list;
+    private CustomAdapter adapter;
     private MyDBHandler db = new MyDBHandler(this, null, null, 1);
+
     public TablesActivity CustomListView = null;
     public ArrayList<Tables> tables = new ArrayList<Tables>();
     public ArrayList<Tables> f_tables = new ArrayList<Tables>();

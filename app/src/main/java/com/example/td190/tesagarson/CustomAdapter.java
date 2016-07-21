@@ -24,8 +24,9 @@ public class CustomAdapter extends BaseAdapter implements OnClickListener{
     private Activity activity;
     private ArrayList tables;
     private static LayoutInflater inflater=null;
+    private Tables modelTable = new Tables();
+
     public Resources res;
-    Tables modelTable = new Tables();
 
     public CustomAdapter(Activity a, ArrayList d,Resources resLocal) {
 

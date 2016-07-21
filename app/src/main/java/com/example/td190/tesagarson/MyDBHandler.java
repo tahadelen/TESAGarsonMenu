@@ -36,6 +36,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     //Columns for categories
     public static final String COLUMN_CATID = "_catId";
     public static final String COLUMN_CATNAME = "_catName";
+    public static final String COLUMN_CATIMG = "_catImg";
 
     //Table for tables
     public static final String TABLE_TABLES = "tables";
@@ -75,7 +76,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         String query_cat = "CREATE TABLE " + TABLE_CATEGORY + "(" +
                 COLUMN_CATID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_CATNAME + " TEXT " +
+                COLUMN_CATNAME + " TEXT, " +
+                COLUMN_CATIMG + " BLOB " +
                 ");";
 
         String query_product = "CREATE TABLE " + TABLE_PRODUCTS + "(" +
@@ -120,6 +122,28 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_USERS, null, user_values);
+        db.close();
+    }
+
+    public void addProduct(Products product){
+        ContentValues product_values = new ContentValues();
+        product_values.put(COLUMN_PRODUCTNAME, product.get_productName());
+        product_values.put(COLUMN_PRODUCTCAT, product.get_productCat());
+        product_values.put(COLUMN_PRODUCTPRICE, product.get_price());
+        product_values.put(COLUMN_PRODUCTIMG, product.get_img());
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_PRODUCTS, null, product_values);
+        db.close();
+    }
+
+    public void addCat(Category category){
+        ContentValues category_values = new ContentValues();
+        category_values.put(COLUMN_CATNAME, category.get_catName());
+        category_values.put(COLUMN_CATIMG,  category.get_catImg());
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_CATEGORY, null, category_values);
         db.close();
     }
 

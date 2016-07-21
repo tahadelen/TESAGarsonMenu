@@ -7,22 +7,33 @@ public class Category {
 
     private int _id;
     private String _catName;
+    private byte[] _catImg;
 
-    public Category(String _catName) {
+    public void set_catImg(byte[] _catImg) {
+        this._catImg = _catImg;
+    }
 
-        this._catName = _catName;
+    public byte[] get_catImg() {
+
+        return _catImg;
+    }
+
+    public Category(String catName, byte[] catImg) {
+
+        this._catName = catName;
+        this._catImg = catImg;
     }
 
     public Category (){
 
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void set_id(int id) {
+        this._id = id;
     }
 
-    public void set_catName(String _catName) {
-        this._catName = _catName;
+    public void set_catName(String catName) {
+        this._catName = catName;
     }
 
     public int get_id() {

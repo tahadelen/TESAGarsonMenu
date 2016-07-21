@@ -2,6 +2,8 @@ package com.example.td190.tesagarson;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,16 +12,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.td190.tesagarson.Model.Category;
+import com.example.td190.tesagarson.Model.Products;
 import com.example.td190.tesagarson.Model.Tables;
 import com.example.td190.tesagarson.Model.Users;
+import java.io.ByteArrayOutputStream;
 
 public class ActivityLogin extends Activity {
 
     private Button loginButton,cancelButton;
     private EditText nameText,passText;
-
     private TextView tx1;
     private int CTR = 3;
+
     public MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
     @Override
@@ -29,7 +34,7 @@ public class ActivityLogin extends Activity {
 
         addDataToDatabase(dbHandler);
 
-        //Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
 
         loginButton=(Button)findViewById(R.id.loginButton);
         nameText=(EditText)findViewById(R.id.nameText);
@@ -79,6 +84,38 @@ public class ActivityLogin extends Activity {
 
         Tables table = new Tables();
         Users user = new Users();
+        Products product = new Products();
+        Category category = new Category();
+
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte imageInByte[] = stream.toByteArray();
+
+        Bitmap image_2 = BitmapFactory.decodeResource(getResources(), R.drawable.product);
+        ByteArrayOutputStream stream_2 = new ByteArrayOutputStream();
+        image_2.compress(Bitmap.CompressFormat.PNG, 100, stream_2);
+        byte imageInByte_2[] = stream_2.toByteArray();
+
+        for (int i=0; i<4; i++){
+            category.set_catImg(imageInByte);
+            category.set_catName("Kategori: " + i);
+            dbHandler.addCat(category);
+        }
+
+        int j=0;
+
+        for (int i=0; i<8; i++){
+            product.set_price(i);
+            product.set_productName("ürün: " + i);
+            product.set_productCat("Kategori: " + j++);
+            product.set_img(imageInByte_2);
+            if(j==4)
+                j=0;
+
+            dbHandler.addProduct(product);
+        }
+
 
         for (int i=0; i<2; i++){
             user.set_name("a"+i);

@@ -9,4 +9,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.td190.tesagarson.RestaurantMenuActivity">
 
+    <ListView
+        android:layout_width="130dp"
+        android:layout_height="350dp"
+        android:id="@+id/listView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="130dp"
+        android:layout_height="350dp"
+        android:id="@+id/listView2"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/listView" />
 </RelativeLayout>

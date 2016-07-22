@@ -174,6 +174,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             }while (c.moveToNext());
             db.close();
             return productList;
+
         }
     }
 

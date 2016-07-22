@@ -51,7 +51,7 @@ public class ActivityLogin extends Activity {
                 if(user != null) {
                     Toast.makeText(getApplicationContext(), "Oldu",Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(ActivityLogin.this, TablesActivity.class);
-                    myIntent.putExtra("key", user.get_id()); //Optional parameters
+                    myIntent.putExtra("key", Integer.toString(user.get_id())); //Optional parameters
                     ActivityLogin.this.startActivity(myIntent);
                     CTR=3;
                     tx1.setText(Integer.toString(CTR));

@@ -156,6 +156,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE 1";
         Cursor c = db.rawQuery(query, null);
+        productList.clear();
 
         if (!(c.moveToFirst()) || c.getCount() == 0) {
             db.close();

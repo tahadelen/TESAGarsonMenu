@@ -19,8 +19,10 @@ public class Products {
     }
 
     public Products (){
-
-
+        this._productName = "";
+        this._productCat = "";
+        this._img = null;
+        this._price = 0;
     }
 
     public int get_id() {

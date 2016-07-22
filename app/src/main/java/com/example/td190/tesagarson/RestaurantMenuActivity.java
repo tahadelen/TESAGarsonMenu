@@ -47,20 +47,32 @@ public class RestaurantMenuActivity extends Activity {
     {
         final Category tempValue = categories.get(mPosition);
         ArrayList<Products> filtred = new ArrayList<>();
+        ArrayList<Products> empty = new ArrayList<>();
 
-        products = db.getProducts();
+        empty.clear();
+        empty.add(new Products());
 
         CustomListView = this;
         Resources res = getResources();
         list_pro = (ListView)findViewById(R.id.listview_menu_pro);
 
+        pro_adapter = new ProductAdapter(CustomListView, empty, res);
+        pro_adapter.notifyDataSetChanged();
+        list_pro.setAdapter(pro_adapter);
+        //
+       /* pro_adapter = new ProductAdapter(CustomListView, empty, res);
+        pro_adapter.notifyDataSetChanged();
+        list_pro.setAdapter(pro_adapter);*/
+
+        products = db.getProducts();
+
+        //There is some problem with this loop
+        //
         filtred.clear();
-        for (int i=0; i<categories.size(); i++){
-            for(int j=0; j<products.size(); j++) {
-                if (products.get(j).get_productCat().equals(categories.get(i).get_catName())){
-                    filtred.add(products.get(j));
+        for (int i=0; i<products.size(); i++){
+                if (products.get(i).get_productCat().equals(tempValue.get_catName())){
+                    filtred.add(products.get(i));
                 }
-            }
         }
 
         pro_adapter = new ProductAdapter(CustomListView, filtred, res);

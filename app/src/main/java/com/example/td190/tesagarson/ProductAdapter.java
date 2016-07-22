@@ -43,7 +43,7 @@ public class ProductAdapter extends BaseAdapter implements OnClickListener{
 
     @Override
     public int getCount() {
-        if(products.size() <= 0)
+        if(products.size() < 0)
             return -1;
         else
             return products.size();

@@ -126,7 +126,7 @@ public class ProductAdapter extends BaseAdapter implements OnClickListener{
 
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
 
-            sct.onItemClick(mPosition);
+            sct.onItemProClick(mPosition);
         }
     }
 

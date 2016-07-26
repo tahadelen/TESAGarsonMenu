@@ -127,7 +127,7 @@ public class CategoryAdapter extends BaseAdapter implements OnClickListener {
 
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
 
-            sct.onItemClick(mPosition);
+            sct.onItemCatClick(mPosition);
         }
     }
 }

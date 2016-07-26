@@ -12,19 +12,39 @@
     <Spinner
         android:id="@+id/floorSpinner"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/spinner_name"
         style="@style/spinner_style">
     </Spinner>
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_below="@id/floorSpinner"
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="@style/listview_style" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Katlar:"
+        android:id="@+id/spinner_name"
+        android:layout_alignTop="@+id/floorSpinner"
+        android:layout_alignStart="@+id/list" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/list_name"
+        style="@style/listview_style"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Masalar:"
+        android:id="@+id/list_name"
+        android:layout_below="@+id/floorSpinner"
+        android:layout_alignStart="@+id/list" />
+
 
 </RelativeLayout>

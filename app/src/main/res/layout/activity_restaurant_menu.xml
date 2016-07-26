@@ -45,4 +45,12 @@
         android:id="@+id/menu_product_text"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/listview_menu_pro" />
+
+    <GridView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/choosen"
+        android:numColumns="1"
+        android:layout_toEndOf="@+id/listview_menu_pro"></GridView>
+
 </RelativeLayout>

@@ -6,4 +6,6 @@
     <string name="attemptLeft">Kalan Deneme:</string>
     <string name="loginButton">login</string>
     <string name="cancelButton">Cancel</string>
-</resources>
+    <string name="addButton">+</string>
+    <string name="removeButton">-</string>
+    <string name="sendButton">Ekle</string></resources>

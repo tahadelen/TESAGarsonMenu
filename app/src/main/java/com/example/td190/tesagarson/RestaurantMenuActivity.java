@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.GridView;
 
@@ -19,6 +22,8 @@ public class RestaurantMenuActivity extends Activity {
 
     private ListView list_cat;
     private ListView list_pro;
+    private Products product;
+    private ChoosenProduct choice = new ChoosenProduct();
     private CategoryAdapter cat_adapter;
     private ProductAdapter pro_adapter;
     private MyDBHandler db = new MyDBHandler(this, null, null, 1);
@@ -26,7 +31,12 @@ public class RestaurantMenuActivity extends Activity {
     private ArrayList<Products> products = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private GridView gridView;
+    private ArrayList<ChoosenProduct> choices = new ArrayList<>();
     private ArrayList<Products> filtred = new ArrayList<>();
+
+    private Button addButton, removeButton, sendButton;
+    private TextView quantity;
+    private int ctrQuantity = 0;
 
     public RestaurantMenuActivity CustomListView = null;
 
@@ -34,6 +44,47 @@ public class RestaurantMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_menu);
+
+        addButton = (Button) findViewById(R.id.addButton);
+        removeButton = (Button) findViewById(R.id.removeButton);
+        sendButton = (Button) findViewById(R.id.sendButton);
+        quantity = (TextView) findViewById(R.id.quantity);
+        quantity.setVisibility(View.GONE);
+
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ctrQuantity++;
+                quantity.setText(Integer.toString(ctrQuantity));
+                quantity.setVisibility(View.VISIBLE);
+            }
+        });
+
+        removeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ctrQuantity--;
+                quantity.setText(Integer.toString(ctrQuantity));
+                quantity.setVisibility(View.VISIBLE);
+            }
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                choice.setProduct(product);
+                choice.setPiece(ctrQuantity);
+                choice.setPortion(1.5);
+
+                choices.add(choice);
+
+                ctrQuantity = 0;
+                quantity.setText(Integer.toString(ctrQuantity));
+
+                GridView gridview = (GridView) findViewById(R.id.choosen);
+                gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, choices));
+            }
+        });
 
         Intent intent = getIntent();
         String table = intent.getStringExtra("key");
@@ -67,19 +118,7 @@ public class RestaurantMenuActivity extends Activity {
     }
 
     public void onItemProClick(int mPosition){
-        final Products product = filtred.get(mPosition);
-        ArrayList<ChoosenProduct> choices = new ArrayList<>();
-        ChoosenProduct choice = new ChoosenProduct();
-
-        choice.setProduct(product);
-        choice.setPiece(2);
-        choice.setPortion(1.5);
-
-        choices.add(choice);
-
-        GridView gridview = (GridView) findViewById(R.id.choosen);
-        gridview.setAdapter(new GridviewAdapter(this, choices));
-
+        product = filtred.get(mPosition);
     }
 
     public void onItemCatClick(int mPosition)

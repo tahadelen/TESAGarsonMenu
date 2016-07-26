@@ -28,6 +28,45 @@
         style="@style/listview_style"
         android:layout_toEndOf="@+id/listView_menu_cat" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addButton"
+        android:id="@+id/addButton"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_below="@+id/listview_menu_pro"
+        android:layout_alignStart="@+id/listview_menu_pro" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/removeButton"
+        android:id="@+id/removeButton"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/addButton"
+        android:layout_alignStart="@+id/addButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sendButton"
+        android:id="@+id/sendButton"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_below="@+id/choosen"
+        android:layout_alignStart="@+id/choosen" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quantity"
+        android:text=""
+        android:layout_alignTop="@+id/addButton"
+        android:layout_alignRight="@+id/listview_menu_pro"
+        android:textSize="25dp" />/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,16 +80,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="İçerik:"
+        android:text="Kategori İçerik:"
         android:id="@+id/menu_product_text"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/listview_menu_pro" />
 
-    <GridView
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Siparişler:"
+        android:id="@+id/menu_content_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/choosen" />
+
+    <GridView
+        android:layout_height="350dp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
         android:id="@+id/choosen"
         android:numColumns="1"
-        android:layout_toEndOf="@+id/listview_menu_pro"></GridView>
+        android:layout_toEndOf="@+id/listview_menu_pro"
+        style="@style/listview_style"></GridView>
+
+
 
 </RelativeLayout>

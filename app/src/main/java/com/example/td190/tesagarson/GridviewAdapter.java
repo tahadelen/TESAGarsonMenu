@@ -4,7 +4,6 @@ package com.example.td190.tesagarson;
  * Created by td190 on 26/07/2016.
  */
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,17 @@ import android.view.View.OnClickListener;
 import android.util.Log;
 import android.app.Activity;
 
-import com.example.td190.tesagarson.Model.ChoosenProduct;
+import com.example.td190.tesagarson.Model.ChosenProduct;
 
 import java.util.ArrayList;
 
 public class GridviewAdapter extends BaseAdapter implements OnClickListener {
 
     Activity activity;
-    private ArrayList<ChoosenProduct> choices;
+    private ArrayList<ChosenProduct> choices;
     private LayoutInflater mInflater;
 
-    public GridviewAdapter(Activity c, ArrayList<ChoosenProduct> d)
+    public GridviewAdapter(Activity c, ArrayList<ChosenProduct> d)
     {
         activity=c;
         choices = d;

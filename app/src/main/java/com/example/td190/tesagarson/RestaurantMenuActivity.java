@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import android.widget.GridView;
 
 import com.example.td190.tesagarson.Model.Category;
-import com.example.td190.tesagarson.Model.ChoosenProduct;
+import com.example.td190.tesagarson.Model.ChosenProduct;
 import com.example.td190.tesagarson.Model.Products;
 
 import java.util.ArrayList;
@@ -30,9 +29,9 @@ public class RestaurantMenuActivity extends Activity {
     private Resources res;
     private ArrayList<Products> products = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
-    private ArrayList<ChoosenProduct> choices = new ArrayList<>();
+    private ArrayList<ChosenProduct> choices = new ArrayList<>();
     private ArrayList<Products> filtred = new ArrayList<>();
-    private ChoosenProduct chc;
+    private ChosenProduct chc;
 
     private Button addButton, removeButton, sendButton, deleteButton;
     private TextView quantity;
@@ -83,7 +82,7 @@ public class RestaurantMenuActivity extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                ChoosenProduct choice = new ChoosenProduct();
+                ChosenProduct choice = new ChosenProduct();
 
                 choice.setProduct(product);
                 choice.setPiece(ctrQuantity);
@@ -107,7 +106,6 @@ public class RestaurantMenuActivity extends Activity {
 
         CustomListView = this;
         res = getResources();
-        //Resources res = getResources();
 
         list_cat = ( ListView )findViewById( R.id.listView_menu_cat );  // List defined in XML ( See Below )
 
@@ -121,8 +119,6 @@ public class RestaurantMenuActivity extends Activity {
         empty.clear();
         empty.add(new Products());
 
-        //CustomListView = this;
-        //Resources res = getResources();
         list_pro = (ListView)findViewById(R.id.listview_menu_pro);
 
         pro_adapter = new ProductAdapter(CustomListView, empty, res);
@@ -144,11 +140,6 @@ public class RestaurantMenuActivity extends Activity {
 
         clearList();
 
-        //
-       /* pro_adapter = new ProductAdapter(CustomListView, empty, res);
-        pro_adapter.notifyDataSetChanged();
-        list_pro.setAdapter(pro_adapter);*/
-
         products = db.getProducts();
 
         //There is some problem with this loop
@@ -163,7 +154,6 @@ public class RestaurantMenuActivity extends Activity {
         pro_adapter = new ProductAdapter(CustomListView, filtred, res);
         list_pro.setAdapter(pro_adapter);
 
-        //Toast.makeText(CustomListView, "Kategori: " + tempValue.get_catName(), Toast.LENGTH_LONG).show();
     }
 
 }

@@ -3,16 +3,16 @@ package com.example.td190.tesagarson.Model;
 /**
  * Created by td190 on 26/07/2016.
  */
-public class ChoosenProduct {
+public class ChosenProduct {
     private Products product;
     private int piece;
     private double portion;
 
-    public ChoosenProduct(){
+    public ChosenProduct(){
 
     }
 
-    public ChoosenProduct(Products product, int piece, double portion) {
+    public ChosenProduct(Products product, int piece, double portion) {
         this.product = product;
         this.piece = piece;
         this.portion = portion;

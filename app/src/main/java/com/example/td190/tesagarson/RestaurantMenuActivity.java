@@ -23,18 +23,18 @@ public class RestaurantMenuActivity extends Activity {
     private ListView list_cat;
     private ListView list_pro;
     private Products product;
-    private ChoosenProduct choice = new ChoosenProduct();
+
     private CategoryAdapter cat_adapter;
     private ProductAdapter pro_adapter;
     private MyDBHandler db = new MyDBHandler(this, null, null, 1);
     private Resources res;
     private ArrayList<Products> products = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
-    private GridView gridView;
     private ArrayList<ChoosenProduct> choices = new ArrayList<>();
     private ArrayList<Products> filtred = new ArrayList<>();
+    private ChoosenProduct chc;
 
-    private Button addButton, removeButton, sendButton;
+    private Button addButton, removeButton, sendButton, deleteButton;
     private TextView quantity;
     private int ctrQuantity = 0;
 
@@ -48,6 +48,8 @@ public class RestaurantMenuActivity extends Activity {
         addButton = (Button) findViewById(R.id.addButton);
         removeButton = (Button) findViewById(R.id.removeButton);
         sendButton = (Button) findViewById(R.id.sendButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+
         quantity = (TextView) findViewById(R.id.quantity);
         quantity.setVisibility(View.GONE);
 
@@ -69,9 +71,20 @@ public class RestaurantMenuActivity extends Activity {
             }
         });
 
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                choices.remove(chc);
+                GridView gridview = (GridView) findViewById(R.id.choosen);
+                gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, choices));
+            }
+        });
+
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                ChoosenProduct choice = new ChoosenProduct();
+
                 choice.setProduct(product);
                 choice.setPiece(ctrQuantity);
                 choice.setPortion(1.5);
@@ -119,6 +132,10 @@ public class RestaurantMenuActivity extends Activity {
 
     public void onItemProClick(int mPosition){
         product = filtred.get(mPosition);
+    }
+
+    public void onGridItemClick(int mPosition){
+        chc = choices.get(mPosition);
     }
 
     public void onItemCatClick(int mPosition)

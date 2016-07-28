@@ -8,4 +8,5 @@
     <string name="cancelButton">Cancel</string>
     <string name="addButton">+</string>
     <string name="removeButton">-</string>
-    <string name="sendButton">Ekle</string></resources>
+    <string name="sendButton">Ekle</string>
+    <string name="deleteButton">Sil</string></resources>

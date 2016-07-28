@@ -58,6 +58,17 @@
         android:layout_below="@+id/choosen"
         android:layout_alignStart="@+id/choosen" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deleteButton"
+        android:id="@+id/deleteButton"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/sendButton"
+        android:layout_alignStart="@+id/sendButton" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

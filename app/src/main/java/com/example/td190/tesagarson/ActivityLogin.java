@@ -25,13 +25,14 @@ public class ActivityLogin extends Activity {
     private TextView tx1;
     private int CTR = 3;
 
-    public MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+    public MyDBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_login);
 
+        dbHandler = new MyDBHandler(this, null, null, 1);
         addDataToDatabase(dbHandler);
 
         Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
@@ -87,6 +88,21 @@ public class ActivityLogin extends Activity {
         Products product = new Products();
         Category category = new Category();
 
+        Bitmap imageGreen = BitmapFactory.decodeResource(getResources(), R.drawable.green);
+        ByteArrayOutputStream streamGreen = new ByteArrayOutputStream();
+        imageGreen.compress(Bitmap.CompressFormat.PNG, 100, streamGreen);
+        byte imageInByteGreen[] = streamGreen.toByteArray();
+
+        Bitmap imageRed = BitmapFactory.decodeResource(getResources(), R.drawable.red);
+        ByteArrayOutputStream streamRed = new ByteArrayOutputStream();
+        imageRed.compress(Bitmap.CompressFormat.PNG, 100, streamRed);
+        byte imageInByteRed[] = streamRed.toByteArray();
+
+        Bitmap imageGrey = BitmapFactory.decodeResource(getResources(), R.drawable.grey);
+        ByteArrayOutputStream streamGrey = new ByteArrayOutputStream();
+        imageGrey.compress(Bitmap.CompressFormat.PNG, 100, streamGrey);
+        byte imageInByteGrey[] = streamGrey.toByteArray();
+
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -130,6 +146,13 @@ public class ActivityLogin extends Activity {
             table.set_tableCustNum(i);
             table.set_tableStatus(i%3);
             table.set_floor(i%2);
+
+            if(table.get_tableStatus()==0)
+                table.set_image(imageInByteGreen);
+            else if(table.get_tableStatus()==1)
+                table.set_image(imageInByteRed);
+            else
+                table.set_image(imageInByteGrey);
 
             dbHandler.addTable(table);
         }

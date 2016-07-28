@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,13 +22,11 @@ public class TablesActivity extends Activity{
 
     private Spinner floorDropDown;
     private static final String floors[] = {"0","1"};
-    private ListView list;
-    private CustomAdapter adapter;
-    private MyDBHandler db = new MyDBHandler(this, null, null, 1);
+    private MyDBHandler db = new MyDBHandler(this, null, null, 2);
 
     public TablesActivity CustomListView = null;
-    public ArrayList<Tables> tables = new ArrayList<Tables>();
-    public ArrayList<Tables> f_tables = new ArrayList<Tables>();
+    public ArrayList<Tables> tables = new ArrayList<>();
+    public ArrayList<Tables> f_tables = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +50,9 @@ public class TablesActivity extends Activity{
 
                 filtertable(position);
 
-                Resources res = getResources();
-                list = ( ListView )findViewById( R.id.list );  // List defined in XML ( See Below )
-
-                adapter = new CustomAdapter( CustomListView, f_tables, res );
-                list.setAdapter( adapter );
+                GridView gridView = (GridView) findViewById(R.id.gridTable);
+                CustomAdapter gridAdapter = new CustomAdapter(CustomListView, TablesActivity.this, R.layout.grid_table_item, f_tables);
+                gridView.setAdapter(gridAdapter);
 
                 Toast.makeText(getBaseContext(), "Selected: " + floors[position], Toast.LENGTH_SHORT).show();
             }
@@ -99,6 +96,7 @@ public class TablesActivity extends Activity{
                 table.set_floor(c.getInt(c.getColumnIndex("_floor")));
                 table.set_tableStatus(c.getInt(c.getColumnIndex("_tableStatus")));
                 table.set_tableCustNum(c.getInt(c.getColumnIndex("_tableCustNum")));
+                table.set_image(c.getBlob(c.getColumnIndex("_tableImg")));
 
                 tables.add(i, table);
                 i++;

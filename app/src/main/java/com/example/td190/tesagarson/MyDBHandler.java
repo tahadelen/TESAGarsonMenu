@@ -48,6 +48,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_FLOOR = "_floor";
     public static final String COLUMN_TABLECUSTNUM = "_tableCustNum";
     public static final String COLUMN_TABLESTATUS = "_tableStatus";
+    public static final String COLUMN_TABLEIMG = "_tableImg";
 
     //table for users
     public static final String TABLE_USERS = "users";
@@ -70,7 +71,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TABLENAME + " TEXT, " +
                 COLUMN_FLOOR + " INTEGER, " +
                 COLUMN_TABLECUSTNUM + " INTEGER, " +
-                COLUMN_TABLESTATUS + " INTEGER " +
+                COLUMN_TABLESTATUS + " INTEGER, " +
+                COLUMN_TABLEIMG + " BLOB " +
                 ");";
 
         String query_user = "CREATE TABLE " + TABLE_USERS + "(" +
@@ -100,7 +102,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldversion, int newversion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TABLES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
@@ -114,6 +116,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         table_values.put(COLUMN_FLOOR, table.get_floor());
         table_values.put(COLUMN_TABLECUSTNUM, table.get_tableCustNum());
         table_values.put(COLUMN_TABLESTATUS, table.get_tableStatus());
+        table_values.put(COLUMN_TABLEIMG, table.get_image());
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_TABLES, null, table_values);

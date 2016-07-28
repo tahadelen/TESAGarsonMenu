@@ -1,5 +1,7 @@
 package com.example.td190.tesagarson.Model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by td190 on 18/07/2016.
  */
@@ -10,16 +12,22 @@ public class Tables {
     private int _floor;
     private int _tableCustNum;
     private int _tableStatus;
+    private byte[] _image;
 
-    public Tables(String tableName, int floor, int tableCustNum, int tableStatus) {
+    public Tables(String tableName, int floor, int tableCustNum, int tableStatus, byte[] image) {
         this._tableName = tableName;
         this._floor = floor;
         this._tableCustNum = tableCustNum;
         this._tableStatus = tableStatus;
+        this._image = image;
     }
 
     public Tables (){
 
+    }
+
+    public void set_image(byte[] _image){
+        this._image = _image;
     }
 
     public void set_id(int _id) {
@@ -40,6 +48,10 @@ public class Tables {
 
     public void set_tableStatus(int _tableStatus) {
         this._tableStatus = _tableStatus;
+    }
+
+    public byte[] get_image(){
+        return _image;
     }
 
     public int get_id() {

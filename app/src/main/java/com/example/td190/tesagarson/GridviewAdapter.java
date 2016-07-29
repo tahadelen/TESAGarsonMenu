@@ -13,17 +13,17 @@ import android.view.View.OnClickListener;
 import android.util.Log;
 import android.app.Activity;
 
-import com.example.td190.tesagarson.Model.ChosenProduct;
+import com.example.td190.tesagarson.Model.Orders;
 
 import java.util.ArrayList;
 
 public class GridviewAdapter extends BaseAdapter implements OnClickListener {
 
     Activity activity;
-    private ArrayList<ChosenProduct> choices;
+    private ArrayList<Orders> choices;
     private LayoutInflater mInflater;
 
-    public GridviewAdapter(Activity c, ArrayList<ChosenProduct> d)
+    public GridviewAdapter(Activity c, ArrayList<Orders> d)
     {
         activity=c;
         choices = d;
@@ -65,7 +65,7 @@ public class GridviewAdapter extends BaseAdapter implements OnClickListener {
         {
             holder = (ViewHolder) convertView.getTag();
         }
-
+//put product name the name of prduct!!!!!!!!!!
         holder.product_name.setText(choices.get(position).getProduct().get_productName());
         holder.product_piece.setText(Integer.toString(choices.get(position).getPiece()));
         holder.product_portion.setText(Double.toString(choices.get(position).getPortion()));

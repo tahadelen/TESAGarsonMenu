@@ -120,12 +120,12 @@ public class TablesActivity extends Activity{
     public void onItemClick(int mPosition)
     {
         final Tables tempValues = ( Tables ) tables.get(mPosition);
-        final String _tableName = f_tables.get(mPosition).get_tableName();
+        final int _tableId = f_tables.get(mPosition).get_id();
 
 
         //Toast.makeText(CustomListView, tempValues.getTableName() + " " + tempValues.getTableCustNum() + " kişi var" + " masa durumu: "+tempValues.getTableStatus(), Toast.LENGTH_LONG).show();
         Intent newIntent = new Intent(TablesActivity.this, RestaurantMenuActivity.class);
-        newIntent.putExtra("key", _tableName);
+        newIntent.putExtra("key", _tableId);
         TablesActivity.this.startActivity(newIntent);
 
         Toast.makeText(CustomListView, tempValues.get_tableName() + " " + tempValues.get_tableCustNum() + " kişi var" + " masa durumu: "+tempValues.get_tableStatus(), Toast.LENGTH_LONG).show();

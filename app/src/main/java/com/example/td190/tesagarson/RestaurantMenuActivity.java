@@ -12,7 +12,7 @@ import android.widget.Toast;
 import android.widget.GridView;
 
 import com.example.td190.tesagarson.Model.Category;
-import com.example.td190.tesagarson.Model.ChosenProduct;
+import com.example.td190.tesagarson.Model.Orders;
 import com.example.td190.tesagarson.Model.Products;
 
 import java.util.ArrayList;
@@ -29,9 +29,9 @@ public class RestaurantMenuActivity extends Activity {
     private Resources res;
     private ArrayList<Products> products = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
-    private ArrayList<ChosenProduct> choices = new ArrayList<>();
+    private ArrayList<Orders> choices = new ArrayList<>();
     private ArrayList<Products> filtred = new ArrayList<>();
-    private ChosenProduct chc;
+    private Orders chc;
 
     private Button addButton, removeButton, sendButton, deleteButton;
     private TextView quantity;
@@ -51,6 +51,18 @@ public class RestaurantMenuActivity extends Activity {
 
         quantity = (TextView) findViewById(R.id.quantity);
         quantity.setVisibility(View.GONE);
+
+        Intent intent = getIntent();
+        final int tableId = intent.getIntExtra("key", 0);
+        Toast.makeText(getApplicationContext(), "The id of the tabel: " + tableId, Toast.LENGTH_SHORT).show();
+
+        choices = db. getOrders(tableId);
+
+        ArrayList<Orders> exists;
+        exists = db.getOrders(tableId);
+//fix the product name problem
+        GridView gridview = (GridView) findViewById(R.id.choosen);
+        gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, exists));
 
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -74,19 +86,23 @@ public class RestaurantMenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 choices.remove(chc);
+                db.deleteOrder(chc);
+                ArrayList<Orders> remainOrders = db.getOrders(tableId);
                 GridView gridview = (GridView) findViewById(R.id.choosen);
-                gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, choices));
+                gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, remainOrders));
             }
         });
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                ChosenProduct choice = new ChosenProduct();
+                Orders choice = new Orders();
 
                 choice.setProduct(product);
                 choice.setPiece(ctrQuantity);
                 choice.setPortion(1.5);
+                choice.setTable(db.getTable(tableId));
+                db.addChoice(choice);
 
                 choices.add(choice);
 
@@ -97,10 +113,6 @@ public class RestaurantMenuActivity extends Activity {
                 gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, choices));
             }
         });
-
-        Intent intent = getIntent();
-        String table = intent.getStringExtra("key");
-        Toast.makeText(getApplicationContext(), "Table: " + table, Toast.LENGTH_SHORT).show();
 
         categories = db.getCategories();
 

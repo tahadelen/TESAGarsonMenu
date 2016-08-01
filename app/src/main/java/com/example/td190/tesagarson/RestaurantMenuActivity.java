@@ -33,9 +33,12 @@ public class RestaurantMenuActivity extends Activity {
     private ArrayList<Products> filtred = new ArrayList<>();
     private Orders chc;
 
-    private Button addButton, removeButton, sendButton, deleteButton;
+    private Button addButton, removeButton, sendButton, deleteButton, addPortion, removePortion;
     private TextView quantity;
+    private TextView quantityP;
     private int ctrQuantity = 0;
+    private double ctrPortion = 0.0;
+    private static final double ADD = 0.5;
 
     public RestaurantMenuActivity CustomListView = null;
 
@@ -48,9 +51,13 @@ public class RestaurantMenuActivity extends Activity {
         removeButton = (Button) findViewById(R.id.removeButton);
         sendButton = (Button) findViewById(R.id.sendButton);
         deleteButton = (Button) findViewById(R.id.deleteButton);
+        addPortion = (Button) findViewById(R.id.addPortion);
+        removePortion = (Button) findViewById(R.id.removePortion);
 
         quantity = (TextView) findViewById(R.id.quantity);
         quantity.setVisibility(View.GONE);
+        quantityP = (TextView) findViewById(R.id.quantityP);
+        quantityP.setVisibility(View.GONE);
 
         Intent intent = getIntent();
         final int tableId = intent.getIntExtra("key", 0);
@@ -70,6 +77,24 @@ public class RestaurantMenuActivity extends Activity {
                 ctrQuantity++;
                 quantity.setText(Integer.toString(ctrQuantity));
                 quantity.setVisibility(View.VISIBLE);
+            }
+        });
+
+        addPortion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ctrPortion+=ADD;
+                quantityP.setText(Double.toString(ctrPortion));
+                quantityP.setVisibility(View.VISIBLE);
+            }
+        });
+
+        removePortion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ctrPortion-=ADD;
+                quantityP.setText(Double.toString(ctrPortion));
+                quantityP.setVisibility(View.VISIBLE);
             }
         });
 
@@ -98,16 +123,21 @@ public class RestaurantMenuActivity extends Activity {
             public void onClick(View view) {
                 Orders choice = new Orders();
 
+                if (product == null)
+                    return;
+
                 choice.setProduct(product);
                 choice.setPiece(ctrQuantity);
-                choice.setPortion(1.5);
+                choice.setPortion(ctrPortion);
                 choice.setTable(db.getTable(tableId));
                 db.addChoice(choice);
 
                 choices.add(choice);
 
                 ctrQuantity = 0;
+                ctrPortion = 0.0;
                 quantity.setText(Integer.toString(ctrQuantity));
+                quantityP.setText(Double.toString(ctrPortion));
 
                 GridView gridview = (GridView) findViewById(R.id.choosen);
                 gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, choices));

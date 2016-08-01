@@ -12,7 +12,7 @@
 
     <ListView
         android:layout_width="220dp"
-        android:layout_height="350dp"
+        android:layout_height="600dp"
         android:layout_marginTop="30dp"
         android:id="@+id/listView_menu_cat"
         android:layout_alignParentTop="true"
@@ -21,12 +21,21 @@
 
     <ListView
         android:layout_width="220dp"
-        android:layout_height="350dp"
+        android:layout_height="600dp"
         android:layout_marginTop="30dp"
         android:id="@+id/listview_menu_pro"
         android:layout_alignParentTop="true"
         style="@style/listview_style"
         android:layout_toEndOf="@+id/listView_menu_cat" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Adet:"
+        android:id="@+id/piece"
+        android:layout_below="@+id/listview_menu_pro"
+        android:layout_alignStart="@+id/listview_menu_pro" />
 
     <Button
         android:layout_width="wrap_content"
@@ -36,7 +45,7 @@
         android:textColor="#FFFFFF"
         android:background="#7F0000"
         android:layout_below="@+id/listview_menu_pro"
-        android:layout_alignStart="@+id/listview_menu_pro" />
+        android:layout_alignRight="@+id/listview_menu_pro" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +55,7 @@
         android:background="#7F0000"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/addButton"
-        android:layout_alignStart="@+id/addButton" />
+        android:layout_alignRight="@+id/listview_menu_pro" />
 
     <Button
         android:layout_width="wrap_content"
@@ -74,9 +83,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/quantity"
         android:text=""
-        android:layout_alignTop="@+id/addButton"
-        android:layout_alignRight="@+id/listview_menu_pro"
-        android:textSize="25dp" />/>
+        android:layout_below="@+id/piece"
+        android:layout_alignLeft="@+id/listview_menu_pro"
+        android:textSize="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,7 +115,7 @@
         android:layout_alignStart="@+id/choosen" />
 
     <GridView
-        android:layout_height="350dp"
+        android:layout_height="600dp"
         android:layout_width="wrap_content"
         android:layout_marginTop="30dp"
         android:id="@+id/choosen"
@@ -114,6 +123,56 @@
         android:layout_toEndOf="@+id/listview_menu_pro"
         style="@style/listview_style"></GridView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Porsiyon:"
+        android:id="@+id/portion"
+        android:layout_below="@+id/listView_menu_cat"
+        android:layout_alignStart="@+id/listView_menu_cat" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/addPortion"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_below="@+id/listView_menu_cat"
+        android:layout_alignRight="@+id/listView_menu_cat" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:id="@+id/removePortion"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/addPortion"
+        android:layout_alignRight="@+id/listView_menu_cat" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quantityP"
+        android:text=""
+        android:layout_below="@+id/portion"
+        android:layout_alignLeft="@+id/listView_menu_cat"
+        android:textSize="25dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gönder"
+        android:id="@+id/sendToCenter"
+        android:textColor="#FFFFFF"
+        android:background="#7F0000"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/choosen"
+        android:layout_alignRight="@+id/choosen"
+        android:layout_alignBottom="@+id/deleteButton"/>
 
 
 </RelativeLayout>

@@ -82,6 +82,16 @@
         android:textSize="25dp"
         android:layout_marginRight="75dp" />
 
+    <TextView
+        android:id="@+id/login_error"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView"
+        android:padding="10dip"
+        android:textColor="#e30000"
+        android:textStyle="bold" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

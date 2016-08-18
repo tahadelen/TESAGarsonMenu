@@ -86,12 +86,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TABLEIMG + " BLOB " +
                 ");";
 
-        String query_user = "CREATE TABLE " + TABLE_USERS + "(" +
-                COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_USERNAME + " TEXT, " +
-                COLUMN_USERPASSWORD + " TEXT " +
-                ");";
-
         String query_cat = "CREATE TABLE " + TABLE_CATEGORY + "(" +
                 COLUMN_CATID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_CATNAME + " TEXT, " +
@@ -116,7 +110,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 " FOREIGN KEY(" + COLUMN_ORDER_PRODUCT_ID + ")" + " REFERENCES " + TABLE_PRODUCTS + "(" + COLUMN_PRODUCT_ID + ")" +
                 ");";
 
-        sqLiteDatabase.execSQL(query_user);
         sqLiteDatabase.execSQL(query_table);
         sqLiteDatabase.execSQL(query_cat);
         sqLiteDatabase.execSQL(query_product);
@@ -126,7 +119,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldversion, int newversion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TABLES);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         onCreate(sqLiteDatabase);
@@ -142,16 +134,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_TABLES, null, table_values);
-        db.close();
-    }
-
-    public void addUser(Users user){
-        ContentValues user_values = new ContentValues();
-        user_values.put(COLUMN_USERNAME, user.get_name());
-        user_values.put(COLUMN_USERPASSWORD, user.get_password());
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_USERS, null, user_values);
         db.close();
     }
 
@@ -314,29 +296,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
             }while(c.moveToNext());
             db.close();
             return categoryList;
-        }
-    }
-
-    public Users getUser(String User_Name, String User_Password){
-        SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
-                + COLUMN_USERNAME + " = " + "'" + User_Name + "'"
-                + " AND "
-                + COLUMN_USERPASSWORD + " = " + "'" + User_Password + "'";
-
-        //String query = "SELECT * FROM " + TABLE_USERS + " WHERE 1";
-
-        Cursor c = db.rawQuery(query, null);
-
-        if (!(c.moveToFirst()) || c.getCount() == 0)
-            return null;
-        else {
-            Users user = new Users();
-            user.set_id(c.getInt(c.getColumnIndex(COLUMN_USER_ID)));
-            user.set_name(c.getString(c.getColumnIndex(COLUMN_USERNAME)));
-            user.set_password(c.getString(c.getColumnIndex(COLUMN_USERPASSWORD)));
-
-            return user;
         }
     }
 

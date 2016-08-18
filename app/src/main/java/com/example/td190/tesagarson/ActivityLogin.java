@@ -15,14 +15,20 @@ import android.widget.Toast;
 import com.example.td190.tesagarson.Model.Category;
 import com.example.td190.tesagarson.Model.Products;
 import com.example.td190.tesagarson.Model.Tables;
-import com.example.td190.tesagarson.Model.Users;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 
 public class ActivityLogin extends Activity {
 
     private Button loginButton,cancelButton;
     private EditText nameText,passText;
-    private TextView tx1;
+    private TextView tx1, errorMsg;
     private int CTR = 3;
 
     public MyDBHandler dbHandler;
@@ -40,6 +46,7 @@ public class ActivityLogin extends Activity {
         loginButton=(Button)findViewById(R.id.loginButton);
         nameText=(EditText)findViewById(R.id.nameText);
         passText=(EditText)findViewById(R.id.passText);
+        errorMsg = (TextView)findViewById(R.id.login_error);
 
         cancelButton=(Button)findViewById(R.id.cancelButton);
         tx1=(TextView)findViewById(R.id.textView);
@@ -48,27 +55,13 @@ public class ActivityLogin extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Users user = dbHandler.getUser(nameText.getText().toString(), passText.getText().toString());
-                if(user != null) {
-                    Toast.makeText(getApplicationContext(), "Oldu",Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(ActivityLogin.this, TablesActivity.class);
-                    myIntent.putExtra("key", Integer.toString(user.get_id())); //Optional parameters
-                    ActivityLogin.this.startActivity(myIntent);
-                    CTR=3;
-                    tx1.setText(Integer.toString(CTR));
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Hatalı Giriş",Toast.LENGTH_SHORT).show();
+                String name = nameText.getText().toString();
+                String password = passText.getText().toString();
+                RequestParams params = new RequestParams();
 
-                    tx1.setVisibility(View.VISIBLE);
-                    tx1.setBackgroundColor(Color.WHITE);
-                    CTR--;
-                    tx1.setText(Integer.toString(CTR));
-
-                    if (CTR == 0) {
-                        loginButton.setEnabled(false);
-                    }
-                }
+                params.put("userName", name);
+                params.put("userPassword", password);
+                invokeWS(params);
             }
         });
 
@@ -81,10 +74,78 @@ public class ActivityLogin extends Activity {
         });
     }
 
+    /**
+     * Method that performs RESTful webservice invocations
+     *
+     * @param params
+     */
+    public void invokeWS(RequestParams params){
+
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.1.4:8080/serviceDB/LoginUser/doLoginUser",params ,new AsyncHttpResponseHandler() {
+            // When the response returned by REST has Http response code '200'
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    // When the JSON response has status boolean value assigned with true
+                    if(obj.getBoolean("status")){
+                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
+                        // Navigate to Home screen
+                        Intent myIntent = new Intent(ActivityLogin.this, TablesActivity.class);
+                        myIntent.putExtra("key", Integer.toString(obj.getInt("userId"))); //Optional parameters
+                        ActivityLogin.this.startActivity(myIntent);
+                        CTR=3;
+                        tx1.setText(Integer.toString(CTR));
+                    }
+                    // Else display error message
+                    else{
+                        errorMsg.setText(obj.getString("error_msg"));
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+
+                        tx1.setVisibility(View.VISIBLE);
+                        tx1.setBackgroundColor(Color.WHITE);
+                        CTR--;
+                        tx1.setText(Integer.toString(CTR));
+
+                        if (CTR == 0) {
+                            loginButton.setEnabled(false);
+                        }
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+            // When the response returned by REST has Http response code other than '200'
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content) {
+
+                Toast.makeText(getApplicationContext(), "code" + statusCode , Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+
+                if(statusCode == 404){
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 500){
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else{
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     void addDataToDatabase (MyDBHandler dbHandler){
 
         Tables table = new Tables();
-        Users user = new Users();
         Products product = new Products();
         Category category = new Category();
 
@@ -130,14 +191,6 @@ public class ActivityLogin extends Activity {
                 j=0;
 
             dbHandler.addProduct(product);
-        }
-
-
-        for (int i=0; i<2; i++){
-            user.set_name("a"+i);
-            user.set_password(Integer.toString(i));
-
-            dbHandler.addUser(user);
         }
 
         for (int i = 0; i < 8; i++) {

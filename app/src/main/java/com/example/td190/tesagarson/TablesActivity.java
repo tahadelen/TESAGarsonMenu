@@ -119,7 +119,7 @@ public class TablesActivity extends Activity{
 
     public void onItemClick(int mPosition)
     {
-        final Tables tempValues = ( Tables ) tables.get(mPosition);
+        final Tables tempValues = tables.get(mPosition);
         final int _tableId = f_tables.get(mPosition).get_id();
 
 

@@ -11,10 +11,19 @@ public class Products {
     private byte[] _img;
     private int _price;
 
+    public Products(int _id, String _productName, String _productCat, byte[] _img, int _price) {
+        this._id = _id;
+        this._productName = _productName;
+        this._productCat = _productCat;
+        this._img = _img;
+        this._price = _price;
+    }
+
     public Products(String _productName, String _productCat, byte[] _img, int _price) {
         this._productName = _productName;
         this._productCat = _productCat;
         this._img = _img;
+
         this._price = _price;
     }
 

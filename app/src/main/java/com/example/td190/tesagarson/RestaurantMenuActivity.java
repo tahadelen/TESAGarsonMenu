@@ -234,6 +234,26 @@ public class RestaurantMenuActivity extends Activity {
 
     private void takeProducts(){
 
+        JSONObject serviceResult = RequestWebService.requestWebService("http://192.168.1.4:8080/serviceDB/TransectionProduct/getProducts");
+
+        try {
+            JSONArray items = serviceResult.getJSONArray("product");
+
+            Bitmap image_2 = BitmapFactory.decodeResource(getResources(), R.drawable.product);
+            ByteArrayOutputStream stream_2 = new ByteArrayOutputStream();
+            image_2.compress(Bitmap.CompressFormat.PNG, 100, stream_2);
+            byte imageInByte_2[] = stream_2.toByteArray();
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject obj = items.getJSONObject(i);
+                products
+                        .add(new Products(obj.getInt("_id"), obj.getString("_productName"), obj.getString("_productCat"), imageInByte_2, obj.getInt("_price")));
+            }
+
+        } catch (JSONException e) {
+            // handle exception
+        }
+
     }
 
     private void clearList(){
@@ -262,8 +282,6 @@ public class RestaurantMenuActivity extends Activity {
         final Category tempValue = categories.get(mPosition);
 
         clearList();
-
-        products = db.getProducts();
 
         //There is some problem with this loop
         //

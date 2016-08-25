@@ -13,9 +13,16 @@ public class Category {
         this._catImg = _catImg;
     }
 
+    public Category(int _id, String _catName, byte[] _catImg) {
+        this._id = _id;
+        this._catName = _catName;
+        this._catImg = _catImg;
+    }
+
     public byte[] get_catImg() {
 
         return _catImg;
+
     }
 
     public Category(String catName, byte[] catImg) {

@@ -11,6 +11,16 @@ public class Tables {
     private String _tableName;
     private int _floor;
     private int _tableCustNum;
+
+    public Tables(int _id, String _tableName, int _floor, int _tableCustNum, int _tableStatus, byte[] _image) {
+        this._id = _id;
+        this._tableName = _tableName;
+        this._floor = _floor;
+        this._tableCustNum = _tableCustNum;
+        this._tableStatus = _tableStatus;
+        this._image = _image;
+    }
+
     private int _tableStatus;
     private byte[] _image;
 

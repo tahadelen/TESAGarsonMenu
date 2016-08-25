@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.td190.tesagarson.Model.Category;
 import com.example.td190.tesagarson.Model.Products;
-import com.example.td190.tesagarson.Model.Tables;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -41,8 +40,6 @@ public class ActivityLogin extends Activity {
         dbHandler = new MyDBHandler(this, null, null, 1);
         addDataToDatabase(dbHandler);
 
-        Toast.makeText(getApplicationContext(), "veri tabanında: " + dbHandler.databaseToString(), Toast.LENGTH_LONG).show();
-
         loginButton=(Button)findViewById(R.id.loginButton);
         nameText=(EditText)findViewById(R.id.nameText);
         passText=(EditText)findViewById(R.id.passText);
@@ -68,7 +65,6 @@ public class ActivityLogin extends Activity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHandler.deleteAll();
                 finish();
             }
         });
@@ -145,24 +141,8 @@ public class ActivityLogin extends Activity {
 
     void addDataToDatabase (MyDBHandler dbHandler){
 
-        Tables table = new Tables();
         Products product = new Products();
         Category category = new Category();
-
-        Bitmap imageGreen = BitmapFactory.decodeResource(getResources(), R.drawable.green);
-        ByteArrayOutputStream streamGreen = new ByteArrayOutputStream();
-        imageGreen.compress(Bitmap.CompressFormat.PNG, 100, streamGreen);
-        byte imageInByteGreen[] = streamGreen.toByteArray();
-
-        Bitmap imageRed = BitmapFactory.decodeResource(getResources(), R.drawable.red);
-        ByteArrayOutputStream streamRed = new ByteArrayOutputStream();
-        imageRed.compress(Bitmap.CompressFormat.PNG, 100, streamRed);
-        byte imageInByteRed[] = streamRed.toByteArray();
-
-        Bitmap imageGrey = BitmapFactory.decodeResource(getResources(), R.drawable.grey);
-        ByteArrayOutputStream streamGrey = new ByteArrayOutputStream();
-        imageGrey.compress(Bitmap.CompressFormat.PNG, 100, streamGrey);
-        byte imageInByteGrey[] = streamGrey.toByteArray();
 
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -191,23 +171,6 @@ public class ActivityLogin extends Activity {
                 j=0;
 
             dbHandler.addProduct(product);
-        }
-
-        for (int i = 0; i < 8; i++) {
-
-            table.set_tableName("masa_" + i);
-            table.set_tableCustNum(i);
-            table.set_tableStatus(i%3);
-            table.set_floor(i%2);
-
-            if(table.get_tableStatus()==0)
-                table.set_image(imageInByteGreen);
-            else if(table.get_tableStatus()==1)
-                table.set_image(imageInByteRed);
-            else
-                table.set_image(imageInByteGrey);
-
-            dbHandler.addTable(table);
         }
     }
 

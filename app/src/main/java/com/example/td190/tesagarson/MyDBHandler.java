@@ -308,44 +308,4 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void deleteTable(){
-        //String tableName
-        SQLiteDatabase db = getWritableDatabase();
-        //db.execSQL("DELETE FROM " + TABLE_TABLES + " WHERE " + COLUMN_TABLENAME + "=\"" + tableName + "\";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TABLES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
-        db.close();
-    }
-
-    public Cursor selectAll(){
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_TABLES + " WHERE 1";
-        Cursor c = db.rawQuery(query,null);
-        return c;
-    }
-
-    public String databaseToString(){
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_TABLES + " WHERE 1";
-
-        //Cursor point to location in your results
-        Cursor c = db.rawQuery(query,null);
-        //move to the first raw in your results
-        c.moveToFirst();
-
-        do{
-            if(c.getString(c.getColumnIndex("_tableName"))!=null){
-                dbString += c.getString(c.getColumnIndex("_tableName"));
-                dbString += " " + c.getString(c.getColumnIndex("_floor"));
-                dbString += " " + c.getString(c.getColumnIndex("_tableStatus"));
-                dbString += "\n";
-            }
-        }while(c.moveToNext());
-
-        db.close();
-        return dbString;
-    }
 }

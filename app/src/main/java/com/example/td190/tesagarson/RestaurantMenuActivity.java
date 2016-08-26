@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,7 @@ public class RestaurantMenuActivity extends Activity {
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Orders> choices = new ArrayList<>();
     private ArrayList<Products> filtred = new ArrayList<>();
+    private ArrayList<Orders> exists = new ArrayList<>();
     private Orders chc;
 
     private Button addButton, removeButton, sendButton, deleteButton, addPortion, removePortion;
@@ -88,8 +90,6 @@ public class RestaurantMenuActivity extends Activity {
 
         choices = db.getOrders(tableId);
 
-        ArrayList<Orders> exists;
-        exists = db.getOrders(tableId);
 //fix the product name problem
         GridView gridview = (GridView) findViewById(R.id.choosen);
         gridview.setAdapter(new GridviewAdapter(RestaurantMenuActivity.this, exists));
@@ -188,6 +188,7 @@ public class RestaurantMenuActivity extends Activity {
             try {
                 takeCategories();
                 takeProducts();
+                takeOrderExist();
                 dialog.hide();
             } catch (Throwable e) {
                 // handle exceptions
@@ -197,7 +198,7 @@ public class RestaurantMenuActivity extends Activity {
 
         @Override
         protected void onPostExecute(Void unused) {
-
+            dialog.hide();
             CustomListView = RestaurantMenuActivity.this;
             res = getResources();
 
@@ -210,21 +211,73 @@ public class RestaurantMenuActivity extends Activity {
 
     }
 
-    private void takeCategories(){
-        JSONObject serviceResult = RequestWebService.requestWebService("http://192.168.1.4:8080/serviceDB/TransectionCategory/getCategory");
+    private void takeOrderExist(){
+        Intent intent = getIntent();
+        final int tableId = intent.getIntExtra("key", 0);
+        JSONArray itemsArray;
+        JSONObject itemsObject;
+        JSONObject serviceResult = RequestWebService.requestWebService("http://192.168.1.4:8080/serviceDB/TransectionOrder/getOrders?tableId=" + Integer.toString(tableId));
 
         try {
-            JSONArray items = serviceResult.getJSONArray("category");
+            Object items = serviceResult.get("orders");
 
-            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte imageInByte[] = stream.toByteArray();
+            if (items instanceof JSONArray){
+                itemsArray = (JSONArray) items;
 
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject obj = items.getJSONObject(i);
-                categories.add(new Category(obj.getInt("_id"), obj.getString("_catName"), imageInByte));
+                Log.d("items", "item sayısı: " + Integer.toString(itemsArray.length()));
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    Tables table = new Tables();
+                    Products product = new Products();
+                    JSONObject obj = itemsArray.getJSONObject(i);
+                    product.set_productName(obj.getJSONObject("product").getString("_productName"));
+                    table.set_id(tableId);
+                    exists.add(new Orders(obj.getInt("orderId"), table, obj.getInt("piece"), obj.getDouble("portion"), product));
+                }
+            } else if (items instanceof JSONObject){
+                itemsObject = (JSONObject) items;
+                Log.d("itemObject:      ", Integer.toString(itemsObject.getInt("orderId")));
+                Tables table = new Tables();
+                Products product = new Products();
+                product.set_productName(itemsObject.getJSONObject("product").getString("_productName"));
+                table.set_id(tableId);
+                exists.add(new Orders(itemsObject.getInt("orderId"), table, itemsObject.getInt("piece"), itemsObject.getDouble("portion"), product));
             }
+
+        } catch (JSONException e) {
+            // handle exception
+        }
+
+    }
+
+    private void takeCategories(){
+        JSONObject serviceResult = RequestWebService.requestWebService("http://192.168.1.4:8080/serviceDB/TransectionCategory/getCategory");
+        JSONArray itemsArray;
+        JSONObject itemsObject;
+
+        try {
+            Object items = serviceResult.getJSONArray("category");
+            if (items instanceof JSONArray) {
+                itemsArray = (JSONArray) items;
+
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte imageInByte[] = stream.toByteArray();
+
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject obj = itemsArray.getJSONObject(i);
+                    categories.add(new Category(obj.getInt("_id"), obj.getString("_catName"), imageInByte));
+                }
+            } else if (items instanceof JSONObject){
+                itemsObject = (JSONObject) items;
+
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.category);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                byte imageInByte[] = stream.toByteArray();
+                    categories.add(new Category(itemsObject.getInt("_id"), itemsObject.getString("_catName"), imageInByte));
+                }
 
         } catch (JSONException e) {
             // handle exception
@@ -235,19 +288,34 @@ public class RestaurantMenuActivity extends Activity {
     private void takeProducts(){
 
         JSONObject serviceResult = RequestWebService.requestWebService("http://192.168.1.4:8080/serviceDB/TransectionProduct/getProducts");
+        JSONArray itemsArray;
+        JSONObject itemsObject;
 
         try {
-            JSONArray items = serviceResult.getJSONArray("product");
+            Object items = serviceResult.getJSONArray("product");
+            if (items instanceof JSONArray) {
 
-            Bitmap image_2 = BitmapFactory.decodeResource(getResources(), R.drawable.product);
-            ByteArrayOutputStream stream_2 = new ByteArrayOutputStream();
-            image_2.compress(Bitmap.CompressFormat.PNG, 100, stream_2);
-            byte imageInByte_2[] = stream_2.toByteArray();
+                itemsArray = (JSONArray) items;
 
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject obj = items.getJSONObject(i);
-                products
-                        .add(new Products(obj.getInt("_id"), obj.getString("_productName"), obj.getString("_productCat"), imageInByte_2, obj.getInt("_price")));
+                Bitmap image_2 = BitmapFactory.decodeResource(getResources(), R.drawable.product);
+                ByteArrayOutputStream stream_2 = new ByteArrayOutputStream();
+                image_2.compress(Bitmap.CompressFormat.PNG, 100, stream_2);
+                byte imageInByte_2[] = stream_2.toByteArray();
+
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject obj = itemsArray.getJSONObject(i);
+                    products.add(new Products(obj.getInt("_id"), obj.getString("_productName"), obj.getString("_productCat"), imageInByte_2, obj.getInt("_price")));
+                }
+            }
+            else if (items instanceof JSONObject){
+                itemsObject = (JSONObject) items;
+
+                Bitmap image_2 = BitmapFactory.decodeResource(getResources(), R.drawable.product);
+                ByteArrayOutputStream stream_2 = new ByteArrayOutputStream();
+                image_2.compress(Bitmap.CompressFormat.PNG, 100, stream_2);
+                byte imageInByte_2[] = stream_2.toByteArray();
+
+                products.add(new Products(itemsObject.getInt("_id"), itemsObject.getString("_productName"), itemsObject.getString("_productCat"), imageInByte_2, itemsObject.getInt("_price")));
             }
 
         } catch (JSONException e) {
